@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 /*!
  * \brief Считывает весь файл в одну большую строку
@@ -171,9 +172,10 @@ void swapLines(struct line_t *line1, struct line_t *line2)
 	line2->len = tLen;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-	const char path[] = "textfile.txt";
+	char path[100] = "textfile2.txt";
+	if(argc > 1) strcpy(path, argv[1]);
 
 	char *text = freadAll(path); //считываем весь файл сразу в одну строку
 	//printf("@\n%s@\n", text);
@@ -181,15 +183,16 @@ int main()
 	struct line_t *lines = textToLines(text, &nLines);
 
 	printf("\nOriginal file:\n");
-	printLines(lines);
+	//printLines(lines);
 
 	swapLines(&lines[0], &lines[1]);
 
 	printf("Lines 1 and 2 swaped:\n");
-	printLines(lines);
-	//printnLines(lines, nLines);
-	free(text); //!!!
-	text = NULL;
+	//printLines(lines);
+	////printnLines(lines, nLines);
+
 	free(lines); //!!!
 	lines = NULL;
+	free(text); //!!!
+	text = NULL;
 }
