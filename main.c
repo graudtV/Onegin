@@ -69,6 +69,38 @@ int lineIsNull(struct line_t *line)
 	return 0;
 }
 
+int lineIsCorrect(struct line_t *line)
+{
+	if(line->ptr == NULL || strlen(line->ptr) == line->len)
+		return 1;
+	return 0;
+}
+/*!
+ * \brief Останавливает программу, если объект структуры line_t некорректен
+ *
+ * Выводит подробные пояснения о причине останова.
+ * Под некорректностью подразумевается неравенство реальной длины строки
+ * и длины, записанной внутри структуры (в len)
+ * Нулевая структура считается корректной
+ *
+ * \param line Указатель на проверяемый объект структуры line_t
+ *
+ * Если нужно проверить line_t на корректность, не завершая программы,
+ * то нужно воспользоваться функцией lineIsCorrect()
+ */
+void lineAssertCorrectness(struct line_t *line)
+{
+	if (lineIsCorrect(line))
+		return;
+
+	printf("ERROR: Assertation of line_t object correctness failed.\n");
+	printf("Line pointer: [%p];\n", line);
+	printf("Line->ptr pointer: [%p];\n", line->ptr);
+	printf("Line->ptr contains: '%s'\n", line->ptr);
+	printf("Line->len is: %zu;\n", line->len);
+	printf("Strlen(line->ptr) returns (real length): %lu;\n", strlen(line->ptr));
+	quit(1);
+}
 /*!
  * \brief Разбивает одну большую строку-текст на отдельные строки
  *
