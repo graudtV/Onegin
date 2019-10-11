@@ -69,6 +69,38 @@ int lineIsNull(struct line_t *line)
 	return 0;
 }
 
+int lineIsCorrect(struct line_t *line)
+{
+	if(line->ptr == NULL || strlen(line->ptr) == line->len)
+		return 1;
+	return 0;
+}
+/*!
+ * \brief Останавливает программу, если объект структуры line_t некорректен
+ *
+ * Выводит подробные пояснения о причине останова.
+ * Под некорректностью подразумевается неравенство реальной длины строки
+ * и длины, записанной внутри структуры (в len)
+ * Нулевая структура считается корректной
+ *
+ * \param line Указатель на проверяемый объект структуры line_t
+ *
+ * Если нужно проверить line_t на корректность, не завершая программы,
+ * то нужно воспользоваться функцией lineIsCorrect()
+ */
+void lineAssertCorrectness(struct line_t *line)
+{
+	if (lineIsCorrect(line))
+		return;
+
+	printf("ERROR: Assertation of line_t object correctness failed.\n");
+	printf("Line pointer: [%p];\n", line);
+	printf("Line->ptr pointer: [%p];\n", line->ptr);
+	printf("Line->ptr contains: '%s'\n", line->ptr);
+	printf("Line->len is: %zu;\n", line->len);
+	printf("Strlen(line->ptr) returns (real length): %lu;\n", strlen(line->ptr));
+	exit(1);
+}
 /*!
  * \brief Разбивает одну большую строку-текст на отдельные строки
  *
@@ -87,7 +119,7 @@ int lineIsNull(struct line_t *line)
 struct line_t *textToLines(char *text, int *NumberOfLines)
 {
 	//TODO: не вписывать пустые строки
-	int nLines = 0;
+	int nLines = 1; //Цикл ниже не учтет последнюю строчку, т.к. она заканчивается на \0, а не \n, поэтому счет с 1
 	for(int i = 0; text[i] != '\0'; ++i) //считаем кол-во строк
 		if(text[i] == '\n')
 			++nLines;
@@ -98,15 +130,17 @@ struct line_t *textToLines(char *text, int *NumberOfLines)
 	assert(lines != NULL); //память успешно выделена
 	lines[0].ptr = text;
 	nLines = 0;
-	int lineLenCounter = 0;
+	int lineLenCounter = 0; //счетчик длины текущей строки
 	for(int i = 0; text[i] != '\0'; ++i, ++lineLenCounter) //проходим по всему text[], инициализируем структуру lines[]
-	if(text[i] == '\n') //если i-ая строка закончиалась
-	{
-		text[i] = '\0'; //заменяем \n на нуль-терминант (\0)
-		lines[i].len = lineLenCounter; //записываем ее длину.
-		lineLenCounter = -1; //Сбрасываем счетчик длины строки. Символ после итерации цикла должен быть нулевым, а не первым, поэтому -1
-		lines[++nLines].ptr = &text[i] + 1; //записываем адрес начала следующей строки
-	}
+		if(text[i] == '\n') //если i-ая строка закончиалась
+		{
+			text[i] = '\0'; //заменяем \n на нуль-терминант (\0)
+			lines[nLines].len = lineLenCounter; //записываем ее длину.
+			lineLenCounter = -1; //Сбрасываем счетчик длины строки. Символ после итерации цикла должен быть нулевым, а не первым, поэтому -1
+			lines[++nLines].ptr = &text[i] + 1; //записываем адрес начала следующей строки
+		}
+	lines[nLines].len = lineLenCounter;
+	++nLines; //теперь в nLines записано число строк, записанных в lines. (Не учитывая нулевой)	
 	lines[nLines].ptr = NULL; //завершающая строка - нулевая. (Работает налогично си-строкам)
 	lines[nLines].len = -1;
 	
@@ -172,23 +206,36 @@ void swapLines(struct line_t *line1, struct line_t *line2)
 	line2->len = tLen;
 }
 
+void test_textToLines(struct line_t lines[])
+{
+	printf("\nTest of textToLines() started.\n");
+	size_t i = 0;
+	for(i = 0; lines[i].ptr != NULL; ++i)
+		lineAssertCorrectness(&lines[i]);
+	printf("Tested successfully.\n");
+	printf("Lines readed: %zu\n", i);
+	printf("All of the line_t lines are correct.\n");
+}
+
 int main(int argc, char *argv[])
 {
 	char path[100] = "textfile2.txt";
 	if(argc > 1) strcpy(path, argv[1]);
 
 	char *text = freadAll(path); //считываем весь файл сразу в одну строку
-	//printf("@\n%s@\n", text);
+	printf("@\n%s@\n", text);
 	int nLines = 0;
 	struct line_t *lines = textToLines(text, &nLines);
 
+	test_textToLines(lines);
+
 	printf("\nOriginal file:\n");
-	//printLines(lines);
+	printLines(lines);
 
 	swapLines(&lines[0], &lines[1]);
 
 	printf("Lines 1 and 2 swaped:\n");
-	//printLines(lines);
+	printLines(lines);
 	////printnLines(lines, nLines);
 
 	free(lines); //!!!
