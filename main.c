@@ -3,6 +3,10 @@
 #include <assert.h>
 #include <string.h>
 
+#define bool short
+#define true 1
+#define false 0
+
 /*!
  * \brief Считывает весь файл в одну большую строку
  *
@@ -10,15 +14,20 @@
  *
  * \param const char path[] Строка-путь к файлу
  * \returns Указатель на выделенную память
+ * \returns NULL Если не удалось открыть файл
  *
- * В случае ошибок (при открытии файла, выделении памяти) выполнение программы прерывается
+ * В случае ошибки при выделении памяти выполнение программы прерывается
  * P.S. Файл открывается и закрывается автоматически. Но память, выделенную под содержимое файла, нужно освобождать вручную!
  */
 char *freadAll(const char path[])
 {
 	FILE *f = fopen(path, "r");
-	assert(f != NULL); //получилось открыть файл
-
+	if(f == NULL) //не удалось открыть файл
+	{
+		printf("ERROR: Cannot open file. May be, it does not exist.\n");
+		return NULL;
+	}
+		printf("INFO: Reading from file '%s'\n", path);
 	//определяем длину файла
 	fseek(f, 0, SEEK_END);
 	long fileLen = ftell(f);
@@ -119,8 +128,11 @@ void lineAssertCorrectness(struct line_t *line)
 struct line_t *textToLines(char *text, int *NumberOfLines)
 {
 	//TODO: не вписывать пустые строки
+	const bool IGNORE_LEFT_SPACES = true;
+	const bool IGNORE_EMPTY_LINES = true;
+
 	int nLines = 1; //Цикл ниже не учтет последнюю строчку, т.к. она заканчивается на \0, а не \n, поэтому счет с 1
-	for(int i = 0; text[i] != '\0'; ++i) //считаем кол-во строк
+	for(int i = 0; text[i] != '\0'; ++i) //считаем кол-во строк в text
 		if(text[i] == '\n')
 			++nLines;
 
@@ -131,16 +143,38 @@ struct line_t *textToLines(char *text, int *NumberOfLines)
 	lines[0].ptr = text;
 	nLines = 0;
 	int lineLenCounter = 0; //счетчик длины текущей строки
-	for(int i = 0; text[i] != '\0'; ++i, ++lineLenCounter) //проходим по всему text[], инициализируем структуру lines[]
-		if(text[i] == '\n') //если i-ая строка закончиалась
+	bool lineIsEmpty = true; //true, если строка состоит только из пробелов и \t
+	for(int i = 0; ; ++i, ++lineLenCounter) //проходим по всему text[], инициализируем структуру lines[]
+	{
+		if(text[i] == '\n' || text[i] == '\0') //если i-ая строка закончиалась
 		{
-			text[i] = '\0'; //заменяем \n на нуль-терминант (\0)
-			lines[nLines].len = lineLenCounter; //записываем ее длину.
+			if(!(lineIsEmpty && (IGNORE_EMPTY_LINES || text[i] == '\0')))
+			{   //Если строчка пустая и ее нужно проигнорировать, 
+				//	то это условие НЕ выполнится
+				//Индекс nLines останется тем же, и следующая строка запишется в тот же элемент lines вместо текущей, пустой
+				//Последняя пустая строчка в text (если прямо перед \0 стоит \n) игнорируется автоматически.
+				lines[nLines].len = lineLenCounter; //записываем ее длину.
+				++nLines; //увеличиваем индекс в массиве строк
+			}
+			
+			lines[nLines].ptr = &text[i] + 1; //Записываем указатель на следующую строку
 			lineLenCounter = -1; //Сбрасываем счетчик длины строки. Символ после итерации цикла должен быть нулевым, а не первым, поэтому -1
-			lines[++nLines].ptr = &text[i] + 1; //записываем адрес начала следующей строки
-		}
-	lines[nLines].len = lineLenCounter;
-	++nLines; //теперь в nLines записано число строк, записанных в lines. (Не учитывая нулевой)	
+			lineIsEmpty = true; //Сбрасываем флажок
+
+			if(text[i] == '\0') //Если это была последняя строка в text, то выходим из цикла
+				break; 
+			text[i] = '\0'; //заменяем \n на нуль-терминант (\0)
+		}	
+		else if(text[i] != ' ' && text[i] != '\t') //Если считан не пробельный символ
+			lineIsEmpty = false;
+		else if(IGNORE_LEFT_SPACES && lineIsEmpty) //игнорирование левых пробелов
+		{
+			++(lines[nLines].ptr); // "сдвигаем" указатель вправо. Теперь пробел не входит в строку (стоит перед ней)
+			--lineLenCounter;
+		}		
+	}
+
+
 	lines[nLines].ptr = NULL; //завершающая строка - нулевая. (Работает налогично си-строкам)
 	lines[nLines].len = -1;
 	
@@ -206,6 +240,9 @@ void swapLines(struct line_t *line1, struct line_t *line2)
 	line2->len = tLen;
 }
 
+#define TEST_TEXTTOLINES 1 //!< Включает/выключает unit test функции test_textToLines()
+
+#if TEST_TEXTTOLINES == 1
 void test_textToLines(struct line_t lines[])
 {
 	printf("\nTest of textToLines() started.\n");
@@ -213,30 +250,56 @@ void test_textToLines(struct line_t lines[])
 	for(i = 0; lines[i].ptr != NULL; ++i)
 		lineAssertCorrectness(&lines[i]);
 	printf("Tested successfully.\n");
-	printf("Lines readed: %zu\n", i);
+	printf("Lines checked: %zu\n", i);
 	printf("All of the line_t lines are correct.\n");
 }
+#endif
+
+void lineWriteAllToFile(struct line_t lines[], FILE *f)
+{
+	assert(f != NULL);
+
+	while(lines->ptr != NULL)
+	{
+		fputs(lines->ptr, f);
+		fputc('\n', f);
+		++lines;
+	}
+}
+
 
 int main(int argc, char *argv[])
 {
-	char path[100] = "textfile2.txt";
-	if(argc > 1) strcpy(path, argv[1]);
+	char path[100] = "example.txt"; //path хранит путь к файлу, из которого происходит чтение. Тут указан файл по умолчанию
+	if(argc > 1) strcpy(path, argv[1]); //Если пользователь передал путь к файлу через консоль, то используем путь пользователя
 
-	char *text = freadAll(path); //считываем весь файл сразу в одну строку
-	printf("@\n%s@\n", text);
+	char *text = NULL; //Сюда будем считывать весь текста из файла (одной большой строчкой)
+	while((text = freadAll(path)) == NULL) //Считываем текст. Если такого файла не существует
+	{
+		printf("Please write correct path.\nPath: "); //Заставляем пользователя ввести нормальный путь
+		scanf("%s", path);
+	}
+
 	int nLines = 0;
 	struct line_t *lines = textToLines(text, &nLines);
 
-	test_textToLines(lines);
+	#if TEST_TEXTTOLINES == 1 
+	test_textToLines(lines); //unit-test
+	#endif
 
-	printf("\nOriginal file:\n");
-	printLines(lines);
+	FILE *fout = fopen("result.txt", "w");
+	fputs("Original file:\n", fout);
+	lineWriteAllToFile(lines, fout);
+
+	//printf("\nOriginal file:\n");
+	//printLines(lines);
 
 	swapLines(&lines[0], &lines[1]);
 
-	printf("Lines 1 and 2 swaped:\n");
-	printLines(lines);
-	////printnLines(lines, nLines);
+	//printf("Lines 1 and 2 swapped:\n");
+	//printLines(lines);
+	fputs("\n\nLines 1 and 2 swapped:\n", fout);
+	lineWriteAllToFile(lines, fout);
 
 	free(lines); //!!!
 	lines = NULL;
