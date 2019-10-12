@@ -27,7 +27,7 @@ char *freadAll(const char path[])
 		printf("ERROR: Cannot open file. May be, it does not exist.\n");
 		return NULL;
 	}
-		printf("INFO: Reading from file\n");
+		printf("INFO: Reading from file '%s'\n", path);
 	//определяем длину файла
 	fseek(f, 0, SEEK_END);
 	long fileLen = ftell(f);
@@ -144,22 +144,26 @@ struct line_t *textToLines(char *text, int *NumberOfLines)
 	nLines = 0;
 	int lineLenCounter = 0; //счетчик длины текущей строки
 	bool lineIsEmpty = true; //true, если строка состоит только из пробелов и \t
-	for(int i = 0; text[i] != '\0'; ++i, ++lineLenCounter) //проходим по всему text[], инициализируем структуру lines[]
+	for(int i = 0; ; ++i, ++lineLenCounter) //проходим по всему text[], инициализируем структуру lines[]
 	{
-		if(text[i] == '\n') //если i-ая строка закончиалась
+		if(text[i] == '\n' || text[i] == '\0') //если i-ая строка закончиалась
 		{
-			if(IGNORE_EMPTY_LINES && lineIsEmpty) //Если строка закончилась и она пустая
-			{
-				lines[nLines].ptr = &text[i] + 1; //вместо указателя на строку, которая оказалась пустой, записываем указатель на следующую
-				lineLenCounter = -1;
-				lineIsEmpty = true;
-				continue;
+			if(!(lineIsEmpty && (IGNORE_EMPTY_LINES || text[i] == '\0')))
+			{   //Если строчка пустая и ее нужно проигнорировать, 
+				//	то это условие НЕ выполнится
+				//Индекс nLines останется тем же, и следующая строка запишется в тот же элемент lines вместо текущей, пустой
+				//Последняя пустая строчка в text (если прямо перед \0 стоит \n) игнорируется автоматически.
+				lines[nLines].len = lineLenCounter; //записываем ее длину.
+				++nLines; //увеличиваем индекс в массиве строк
 			}
-			text[i] = '\0'; //заменяем \n на нуль-терминант (\0)
-			lines[nLines].len = lineLenCounter; //записываем ее длину.
+			
+			lines[nLines].ptr = &text[i] + 1; //Записываем указатель на следующую строку
 			lineLenCounter = -1; //Сбрасываем счетчик длины строки. Символ после итерации цикла должен быть нулевым, а не первым, поэтому -1
-			lineIsEmpty = true;
-			lines[++nLines].ptr = &text[i] + 1; //записываем адрес начала следующей строки
+			lineIsEmpty = true; //Сбрасываем флажок
+
+			if(text[i] == '\0') //Если это была последняя строка в text, то выходим из цикла
+				break; 
+			text[i] = '\0'; //заменяем \n на нуль-терминант (\0)
 		}	
 		else if(text[i] != ' ' && text[i] != '\t') //Если считан не пробельный символ
 			lineIsEmpty = false;
@@ -170,8 +174,7 @@ struct line_t *textToLines(char *text, int *NumberOfLines)
 		}		
 	}
 
-	lines[nLines].len = lineLenCounter;
-	++nLines; //теперь в nLines записано число строк, записанных в lines. (Не учитывая нулевой)	
+
 	lines[nLines].ptr = NULL; //завершающая строка - нулевая. (Работает налогично си-строкам)
 	lines[nLines].len = -1;
 	
@@ -237,6 +240,9 @@ void swapLines(struct line_t *line1, struct line_t *line2)
 	line2->len = tLen;
 }
 
+#define TEST_TEXTTOLINES 1 //!< Включает/выключает unit test функции test_textToLines()
+
+#if TEST_TEXTTOLINES == 1
 void test_textToLines(struct line_t lines[])
 {
 	printf("\nTest of textToLines() started.\n");
@@ -244,13 +250,13 @@ void test_textToLines(struct line_t lines[])
 	for(i = 0; lines[i].ptr != NULL; ++i)
 		lineAssertCorrectness(&lines[i]);
 	printf("Tested successfully.\n");
-	printf("Lines readed: %zu\n", i);
+	printf("Lines checked: %zu\n", i);
 	printf("All of the line_t lines are correct.\n");
 }
+#endif
 
-void lineWriteAllToFile(struct line_t lines[], const char path[])
+void lineWriteAllToFile(struct line_t lines[], FILE *f)
 {
-	FILE *f = fopen(path, "w+"); //Если такого файла нет, то он создастся
 	assert(f != NULL);
 
 	while(lines->ptr != NULL)
@@ -259,38 +265,42 @@ void lineWriteAllToFile(struct line_t lines[], const char path[])
 		fputc('\n', f);
 		++lines;
 	}
-
-	fclose(f);
 }
+
 
 int main(int argc, char *argv[])
 {
-	char path[100] = "textfile2.txt"; //pathхранит путь к файлу, из которого происходит чтение. Тут указан файл по умолчанию
+	char path[100] = "example.txt"; //path хранит путь к файлу, из которого происходит чтение. Тут указан файл по умолчанию
 	if(argc > 1) strcpy(path, argv[1]); //Если пользователь передал путь к файлу через консоль, то используем путь пользователя
 
-	char *text = NULL; //Сюда будем считывать весь текста из файла (одной строчкой)
-	while((text = freadAll(path)) == NULL) //Если такого файла не существует
+	char *text = NULL; //Сюда будем считывать весь текста из файла (одной большой строчкой)
+	while((text = freadAll(path)) == NULL) //Считываем текст. Если такого файла не существует
 	{
 		printf("Please write correct path.\nPath: "); //Заставляем пользователя ввести нормальный путь
 		scanf("%s", path);
 	}
 
-	printf("@\n%s@\n", text);
 	int nLines = 0;
 	struct line_t *lines = textToLines(text, &nLines);
 
-	test_textToLines(lines);
-	
+	#if TEST_TEXTTOLINES == 1 
+	test_textToLines(lines); //unit-test
+	#endif
 
-	printf("\nOriginal file:\n");
-	printLines(lines);
+	FILE *fout = fopen("result.txt", "w");
+	fputs("Original file:\n", fout);
+	lineWriteAllToFile(lines, fout);
+
+	//printf("\nOriginal file:\n");
+	//printLines(lines);
 
 	swapLines(&lines[0], &lines[1]);
 
-	printf("Lines 1 and 2 swaped:\n");
-	printLines(lines);
-	////printnLines(lines, nLines);
-	lineWriteAllToFile(lines, "result.txt");
+	//printf("Lines 1 and 2 swapped:\n");
+	//printLines(lines);
+	fputs("\n\nLines 1 and 2 swapped:\n", fout);
+	lineWriteAllToFile(lines, fout);
+
 	free(lines); //!!!
 	lines = NULL;
 	free(text); //!!!
