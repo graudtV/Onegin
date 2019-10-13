@@ -259,17 +259,20 @@ void lineWriteAllToFile(struct line_t lines[], FILE *f)
 {
 	assert(f != NULL);
 
-	while(lines->ptr != NULL)
+	size_t i = 0;
+	for(i = 0; lines->ptr != NULL; ++i)
 	{
 		fputs(lines->ptr, f);
 		fputc('\n', f);
 		++lines;
 	}
+	printf("INFO: %zu lines are successfully written to a file\n", i);
 }
 
 
 int main(int argc, char *argv[])
 {
+	printf("\n***** WELCOME TO ONEGIN *****\n");
 	char path[100] = "example.txt"; //path хранит путь к файлу, из которого происходит чтение. Тут указан файл по умолчанию
 	if(argc > 1) strcpy(path, argv[1]); //Если пользователь передал путь к файлу через консоль, то используем путь пользователя
 
