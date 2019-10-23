@@ -74,19 +74,25 @@ $(document).ready(function(){initNavTree('main_8c.html','');});
 <code>#include &lt;string.h&gt;</code><br />
 <code>#include &lt;ctype.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="line__t_8h_source.html">line_t.h</a>&quot;</code><br />
-</div><table class="memberdecls">
+</div>
+<p><a href="main_8c_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a4ee6abf83ec78313ac1b62f4174862f9"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a4ee6abf83ec78313ac1b62f4174862f9">freadAll</a> (const char path[])</td></tr>
 <tr class="memdesc:a4ee6abf83ec78313ac1b62f4174862f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Считывает весь файл в одну большую строку  <a href="main_8c.html#a4ee6abf83ec78313ac1b62f4174862f9">More...</a><br /></td></tr>
 <tr class="separator:a4ee6abf83ec78313ac1b62f4174862f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea819d5560ec4b51998aae0f448f4604"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aea819d5560ec4b51998aae0f448f4604">_compareLinesFront</a> (const void *arg1, const void *arg2)</td></tr>
+<tr class="memdesc:aea819d5560ec4b51998aae0f448f4604"><td class="mdescLeft">&#160;</td><td class="mdescRight">Компаратор для qsort для сортировки <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a> по первым буквам  <a href="main_8c.html#aea819d5560ec4b51998aae0f448f4604">More...</a><br /></td></tr>
 <tr class="separator:aea819d5560ec4b51998aae0f448f4604"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbed6adbc0c41cece50459f2fa03a86d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#abbed6adbc0c41cece50459f2fa03a86d">sortLinesFront</a> (struct <a class="el" href="structline__t.html">line_t</a> lines[], size_t nLines)</td></tr>
+<tr class="memdesc:abbed6adbc0c41cece50459f2fa03a86d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция сортировка массива строк <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a> по первым буквам  <a href="main_8c.html#abbed6adbc0c41cece50459f2fa03a86d">More...</a><br /></td></tr>
 <tr class="separator:abbed6adbc0c41cece50459f2fa03a86d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace0b54150c9abc867f83bbb545e883aa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ace0b54150c9abc867f83bbb545e883aa">_compareLinesBack</a> (const void *arg1, const void *arg2)</td></tr>
+<tr class="memdesc:ace0b54150c9abc867f83bbb545e883aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Компаратор для qsort для сортировки <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a> по последним буквам  <a href="main_8c.html#ace0b54150c9abc867f83bbb545e883aa">More...</a><br /></td></tr>
 <tr class="separator:ace0b54150c9abc867f83bbb545e883aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5dca6d8c5bb8a16eddb944eb7aafd3b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ad5dca6d8c5bb8a16eddb944eb7aafd3b">sortLinesBack</a> (struct <a class="el" href="structline__t.html">line_t</a> lines[], size_t nLines)</td></tr>
+<tr class="memdesc:ad5dca6d8c5bb8a16eddb944eb7aafd3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция сортировка массива строк <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a> по последним буквам  <a href="main_8c.html#ad5dca6d8c5bb8a16eddb944eb7aafd3b">More...</a><br /></td></tr>
 <tr class="separator:ad5dca6d8c5bb8a16eddb944eb7aafd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ddf1224851353fc92bfbff6f499fa97"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97">main</a> (int argc, char *argv[])</td></tr>
 <tr class="separator:a0ddf1224851353fc92bfbff6f499fa97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,12 +123,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">arg2</td><td>компаратор для строчек <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a> для сортировки по последним буквам </td></tr>
-  </table>
-  </dd>
-</dl>
+
+<p>Компаратор для qsort для сортировки <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a> по последним буквам </p>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00069">69</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -151,12 +155,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">arg2</td><td>компаратор для строчек <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a> для сортировки по первым буквам </td></tr>
-  </table>
-  </dd>
-</dl>
+
+<p>Компаратор для qsort для сортировки <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a> по первым буквам </p>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00051">51</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -189,6 +191,8 @@ Functions</h2></td></tr>
 NULL Если не удалось открыть файл</dd></dl>
 <p>В случае ошибки при выделении памяти выполнение программы прерывается P.S. Файл открывается и закрывается автоматически. Но память, выделенную под содержимое файла, нужно освобождать вручную! </p>
 <p>!!</p>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00022">22</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -227,6 +231,8 @@ NULL Если не удалось открыть файл</dd></dl>
 <p>!!</p>
 <p>!!</p>
 
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00115">115</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
 </div>
 </div>
 <a id="ad5dca6d8c5bb8a16eddb944eb7aafd3b"></a>
@@ -255,6 +261,10 @@ NULL Если не удалось открыть файл</dd></dl>
       </table>
 </div><div class="memdoc">
 
+<p>Функция сортировка массива строк <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a> по последним буквам </p>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00101">101</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
 </div>
 </div>
 <a id="abbed6adbc0c41cece50459f2fa03a86d"></a>
@@ -282,6 +292,10 @@ NULL Если не удалось открыть файл</dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Функция сортировка массива строк <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a> по первым буквам </p>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00061">61</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>

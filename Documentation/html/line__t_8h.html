@@ -84,7 +84,7 @@ Data Structures</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a7b9cc0c782d4b7e30a1733f9d573723e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="line__t_8h.html#a7b9cc0c782d4b7e30a1733f9d573723e">TEST_TEXTTOLINES</a>&#160;&#160;&#160;1</td></tr>
-<tr class="memdesc:a7b9cc0c782d4b7e30a1733f9d573723e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Включает/выключает unit test функции <a class="el" href="line__t_8h.html#a6bef87870c83f8e8ae20a66089d31cd5">test_textToLines()</a>  <a href="line__t_8h.html#a7b9cc0c782d4b7e30a1733f9d573723e">More...</a><br /></td></tr>
+<tr class="memdesc:a7b9cc0c782d4b7e30a1733f9d573723e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Включает/выключает unit test функции <a class="el" href="line__t_8h.html#a6bef87870c83f8e8ae20a66089d31cd5" title="Unit-test функции textToLines() Проверяет, что все строки полученного массива корректны,...">test_textToLines()</a>  <a href="line__t_8h.html#a7b9cc0c782d4b7e30a1733f9d573723e">More...</a><br /></td></tr>
 <tr class="separator:a7b9cc0c782d4b7e30a1733f9d573723e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -113,6 +113,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ab594044e1e12ad8fad80848c55b32fc1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="line__t_8h.html#ab594044e1e12ad8fad80848c55b32fc1">lineWriteAllToFile</a> (struct <a class="el" href="structline__t.html">line_t</a> *lines, FILE *f)</td></tr>
 <tr class="separator:ab594044e1e12ad8fad80848c55b32fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bef87870c83f8e8ae20a66089d31cd5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="line__t_8h.html#a6bef87870c83f8e8ae20a66089d31cd5">test_textToLines</a> (struct <a class="el" href="structline__t.html">line_t</a> lines[])</td></tr>
+<tr class="memdesc:a6bef87870c83f8e8ae20a66089d31cd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unit-test функции <a class="el" href="line__t_8c.html#a0eb7d9c91480f4e0632d82a2c201d852" title="Разбивает одну большую строку-текст на отдельные строки">textToLines()</a> Проверяет, что все строки полученного массива корректны, т.е. их реальная длина совпадает с записанной. Т.о., если функция textToLine написана НЕправильно, и длина строки по ошибке записывается не в ту структуру, что нужно, то <a class="el" href="line__t_8c.html#a6bef87870c83f8e8ae20a66089d31cd5" title="Unit-test функции textToLines() Проверяет, что все строки полученного массива корректны,...">test_textToLines()</a> покажет это.  <a href="line__t_8h.html#a6bef87870c83f8e8ae20a66089d31cd5">More...</a><br /></td></tr>
 <tr class="separator:a6bef87870c83f8e8ae20a66089d31cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -128,7 +129,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Включает/выключает unit test функции <a class="el" href="line__t_8h.html#a6bef87870c83f8e8ae20a66089d31cd5">test_textToLines()</a> </p>
+<p>Включает/выключает unit test функции <a class="el" href="line__t_8h.html#a6bef87870c83f8e8ae20a66089d31cd5" title="Unit-test функции textToLines() Проверяет, что все строки полученного массива корректны,...">test_textToLines()</a> </p>
+
+<p class="definition">Definition at line <a class="el" href="line__t_8h_source.html#l00034">34</a> of file <a class="el" href="line__t_8h_source.html">line_t.h</a>.</p>
 
 </div>
 </div>
@@ -159,6 +162,8 @@ Functions</h2></td></tr>
 </dl>
 <p>Если нужно проверить <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a> на корректность, не завершая программы, то нужно воспользоваться функцией <a class="el" href="line__t_8c.html#a4923c756d2a1e72a96f8c778502fdd08" title="Проверяет строчку на соответсвие длины строки, записанной в структуре, реальной длине">lineIsCorrect()</a> </p>
 
+<p class="definition">Definition at line <a class="el" href="line__t_8c_source.html#l00061">61</a> of file <a class="el" href="line__t_8c_source.html">line_t.c</a>.</p>
+
 </div>
 </div>
 <a id="a4923c756d2a1e72a96f8c778502fdd08"></a>
@@ -182,6 +187,8 @@ Functions</h2></td></tr>
 <dd>
 0 Если структура заполнена неправильно</dd></dl>
 <p>Если передан нулевой указатель, то программа прерывается. (Т.к. если Вы знаете, что указатель нулевой, то его незачем проверять. Если же не знаете, то это, вероятно, баг, который лучше поймать сразу) </p>
+
+<p class="definition">Definition at line <a class="el" href="line__t_8c_source.html#l00041">41</a> of file <a class="el" href="line__t_8c_source.html">line_t.c</a>.</p>
 
 </div>
 </div>
@@ -214,6 +221,8 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>1 Является нулевой </dd>
 <dd>
 0 Не является </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="line__t_8c_source.html#l00021">21</a> of file <a class="el" href="line__t_8c_source.html">line_t.c</a>.</p>
 
 </div>
 </div>
@@ -264,6 +273,8 @@ Functions</h2></td></tr>
 <p>Печатает все структуры из массива lines[]. </p>
 <p>Нумерует каждую строку, добавляет кавычки для удобства чтения Останавливается, когда встречает нулевую структуру (см описание <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a>) </p>
 
+<p class="definition">Definition at line <a class="el" href="line__t_8c_source.html#l00160">160</a> of file <a class="el" href="line__t_8c_source.html">line_t.c</a>.</p>
+
 </div>
 </div>
 <a id="a1665c05abe23303628e68bf367dc9803"></a>
@@ -301,6 +312,8 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
+<p class="definition">Definition at line <a class="el" href="line__t_8c_source.html#l00180">180</a> of file <a class="el" href="line__t_8c_source.html">line_t.c</a>.</p>
+
 </div>
 </div>
 <a id="a7ad8b4ffacc82400f8b919fd048bc07d"></a>
@@ -337,6 +350,8 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
+<p class="definition">Definition at line <a class="el" href="line__t_8c_source.html#l00200">200</a> of file <a class="el" href="line__t_8c_source.html">line_t.c</a>.</p>
+
 </div>
 </div>
 <a id="a6bef87870c83f8e8ae20a66089d31cd5"></a>
@@ -354,6 +369,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Unit-test функции <a class="el" href="line__t_8c.html#a0eb7d9c91480f4e0632d82a2c201d852" title="Разбивает одну большую строку-текст на отдельные строки">textToLines()</a> Проверяет, что все строки полученного массива корректны, т.е. их реальная длина совпадает с записанной. Т.о., если функция textToLine написана НЕправильно, и длина строки по ошибке записывается не в ту структуру, что нужно, то <a class="el" href="line__t_8c.html#a6bef87870c83f8e8ae20a66089d31cd5" title="Unit-test функции textToLines() Проверяет, что все строки полученного массива корректны,...">test_textToLines()</a> покажет это. </p>
+
+<p class="definition">Definition at line <a class="el" href="line__t_8c_source.html#l00239">239</a> of file <a class="el" href="line__t_8c_source.html">line_t.c</a>.</p>
 
 </div>
 </div>
@@ -394,6 +413,8 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>указатель на массив lines типа <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a></dd></dl>
 <p>Последняя структура в массиве является нулевой (см описание <a class="el" href="structline__t.html" title="Заголовочный файл с прототипами функций из line_t.c.">line_t</a>) </p>
+
+<p class="definition">Definition at line <a class="el" href="line__t_8c_source.html#l00091">91</a> of file <a class="el" href="line__t_8c_source.html">line_t.c</a>.</p>
 
 </div>
 </div>

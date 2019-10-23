@@ -94,7 +94,6 @@ struct line_t *textToLines(char *text, size_t *NumberOfLines)
 	#define true 1
 	#define false 0
 
-	//TODO: не вписывать пустые строки
 	const bool IGNORE_LEFT_SPACES = true;
 	const bool IGNORE_EMPTY_LINES = true;
 
@@ -208,6 +207,13 @@ void swapLines(struct line_t *line1, struct line_t *line2)
 	line2->len = tLen;
 }
 
+/*!
+ * \brief Записывает все строчки из массива строк типа line_t в файл
+ *
+ * \param lines[] Массив структур. Должен заканчиваться нулевой структурой (см описание line_t)
+ * \param f Файл, в который происходит запись. 
+ * Должен быть открыт соответсвующим образом (на запись) перед вызовом функции.
+ */
 void lineWriteAllToFile(struct line_t lines[], FILE *f)
 {
 	assert(f != NULL);
@@ -224,6 +230,12 @@ void lineWriteAllToFile(struct line_t lines[], FILE *f)
 
 
 #if TEST_TEXTTOLINES == 1
+/*!
+ * \brief Unit-test функции textToLines()
+ * Проверяет, что все строки полученного массива корректны, т.е. их реальная длина совпадает с записанной.
+ * Т.о., если функция textToLine написана НЕправильно, и длина строки по ошибке записывается не в ту структуру, что нужно, то
+ * test_textToLines() покажет это.
+ */
 void test_textToLines(struct line_t lines[])
 {
 	printf("\nTest of textToLines() started.\n");

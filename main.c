@@ -45,19 +45,28 @@ char *freadAll(const char path[])
 	return text;
 }
 
-int _compareLinesFront(const void *arg1, const void *arg2) //!< компаратор для строчек line_t для сортировки по первым буквам
+/*!
+ * \brief Компаратор для qsort для сортировки line_t по первым буквам
+ */
+int _compareLinesFront(const void *arg1, const void *arg2)
 {
 	const struct line_t *line1 = (const struct line_t*)arg1;
 	const struct line_t *line2 = (const struct line_t*)arg2;
 	return strcmp(line1->ptr, line2->ptr);
 }
 
+/*!
+ * \brief Функция сортировка массива строк line_t по первым буквам
+ */
 void sortLinesFront(struct line_t lines[], size_t nLines)
 {
 	qsort(lines, nLines, sizeof(struct line_t), &_compareLinesFront);
 }
 
-int _compareLinesBack(const void *arg1, const void *arg2) //!< компаратор для строчек line_t для сортировки по последним буквам
+/*!
+ * \brief Компаратор для qsort для сортировки line_t по последним буквам
+ */
+int _compareLinesBack(const void *arg1, const void *arg2)
 {
 	const struct line_t *line1 = (const struct line_t*)arg1;
 	const struct line_t *line2 = (const struct line_t*)arg2;
@@ -86,6 +95,9 @@ int _compareLinesBack(const void *arg1, const void *arg2) //!< компарат�
 
 }
 
+/*!
+ * \brief Функция сортировка массива строк line_t по последним буквам
+ */
 void sortLinesBack(struct line_t lines[], size_t nLines)
 {
 	qsort(lines, nLines, sizeof(struct line_t), &_compareLinesBack);
