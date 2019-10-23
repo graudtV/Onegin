@@ -20,9 +20,9 @@
  */
 int lineIsNull(struct line_t *line)
 {
-	if(line->ptr == NULL)
+	if (line->ptr == NULL)
 	{
-		if(line->len != -1) 
+		if (line->len != -1) 
 			printf("WARNING: line->ptr == NULL, but line->len != -1.\tlen = %zu;\n", line->len);
 		return 1;
 	}
@@ -41,7 +41,7 @@ int lineIsNull(struct line_t *line)
 int lineIsCorrect(struct line_t *line)
 {
 	assert(line != NULL);
-	if(line->ptr == NULL || strlen(line->ptr) == line->len)
+	if (line->ptr == NULL || strlen(line->ptr) == line->len)
 		return 1;
 	return 0;
 }
@@ -99,8 +99,8 @@ struct line_t *textToLines(char *text, size_t *NumberOfLines)
 	const bool IGNORE_EMPTY_LINES = true;
 
 	size_t nLines = 1; //Цикл ниже не учтет последнюю строчку, т.к. она заканчивается на \0, а не \n, поэтому счет с 1
-	for(int i = 0; text[i] != '\0'; ++i) //считаем кол-во строк в text
-		if(text[i] == '\n')
+	for (int i = 0; text[i] != '\0'; ++i) //считаем кол-во строк в text
+		if (text[i] == '\n')
 			++nLines;
 
 	printf("INFO: Number of lines in file: %zu; \n", nLines);
@@ -111,11 +111,11 @@ struct line_t *textToLines(char *text, size_t *NumberOfLines)
 	nLines = 0;
 	size_t lineLenCounter = 0; //счетчик длины текущей строки
 	bool lineIsEmpty = true; //true, если строка состоит только из пробелов и \t
-	for(size_t i = 0; ; ++i, ++lineLenCounter) //проходим по всему text[], инициализируем структуру lines[]
+	for (size_t i = 0; ; ++i, ++lineLenCounter) //проходим по всему text[], инициализируем структуру lines[]
 	{
-		if(text[i] == '\n' || text[i] == '\0') //если i-ая строка закончиалась
+		if (text[i] == '\n' || text[i] == '\0') //если i-ая строка закончиалась
 		{
-			if(!(lineIsEmpty && (IGNORE_EMPTY_LINES || text[i] == '\0')))
+			if (!(lineIsEmpty && (IGNORE_EMPTY_LINES || text[i] == '\0')))
 			{   //Если строчка пустая и ее нужно проигнорировать, 
 				//	то это условие НЕ выполнится
 				//Индекс nLines останется тем же, и следующая строка запишется в тот же элемент lines вместо текущей, пустой
@@ -128,13 +128,13 @@ struct line_t *textToLines(char *text, size_t *NumberOfLines)
 			lineLenCounter = -1; //Сбрасываем счетчик длины строки. Символ после итерации цикла должен быть нулевым, а не первым, поэтому -1
 			lineIsEmpty = true; //Сбрасываем флажок
 
-			if(text[i] == '\0') //Если это была последняя строка в text, то выходим из цикла
+			if (text[i] == '\0') //Если это была последняя строка в text, то выходим из цикла
 				break; 
 			text[i] = '\0'; //заменяем \n на нуль-терминант (\0)
 		}	
-		else if(text[i] != ' ' && text[i] != '\t') //Если считан не пробельный символ
+		else if (text[i] != ' ' && text[i] != '\t') //Если считан не пробельный символ
 			lineIsEmpty = false;
-		else if(IGNORE_LEFT_SPACES && lineIsEmpty) //игнорирование левых пробелов
+		else if (IGNORE_LEFT_SPACES && lineIsEmpty) //игнорирование левых пробелов
 		{
 			++(lines[nLines].ptr); // "сдвигаем" указатель вправо. Теперь пробел не входит в строку (стоит перед ней)
 			--lineLenCounter;
@@ -146,7 +146,7 @@ struct line_t *textToLines(char *text, size_t *NumberOfLines)
 	lines[nLines].len = -1;
 	
 	printf("INFO: Number of lines after deleting empty ones: %zu; \n", nLines);	
-	if(NumberOfLines != NULL)
+	if (NumberOfLines != NULL)
 		*NumberOfLines = nLines;
 	return lines;
 }
@@ -162,7 +162,7 @@ void printLines(struct line_t lines[])
 {
 	printf("***** beginning of the text *****\n");
 	size_t i = 0; //счетчик строк
-	for(i = 0; !lineIsNull(lines); ++i) //no more lines
+	for (i = 0; !lineIsNull(lines); ++i) //no more lines
 	{
 		printf("line №%zu: '%s'\n", i + 1, lines->ptr);
 		++lines; //переходим к следующей строке
@@ -182,7 +182,7 @@ void printnLines(struct line_t lines[], size_t n)
 {
 	printf("***** beginning of the text *****\n");
 	size_t i = 0; //счетчик строк
-	for(i = 0; i < n; ++i) //no more lines
+	for (i = 0; i < n; ++i) //no more lines
 	{
 		assert(!lineIsNull(lines));
 		printf("line [%zu/%zu]: '%s'\n", i + 1, n, lines->ptr);
@@ -213,7 +213,7 @@ void lineWriteAllToFile(struct line_t lines[], FILE *f)
 	assert(f != NULL);
 
 	size_t i = 0;
-	for(i = 0; lines->ptr != NULL; ++i)
+	for (i = 0; lines->ptr != NULL; ++i)
 	{
 		fputs(lines->ptr, f);
 		fputc('\n', f);
@@ -228,7 +228,7 @@ void test_textToLines(struct line_t lines[])
 {
 	printf("\nTest of textToLines() started.\n");
 	size_t i = 0;
-	for(i = 0; lines[i].ptr != NULL; ++i)
+	for (i = 0; lines[i].ptr != NULL; ++i)
 		lineAssertCorrectness(&lines[i]);
 	printf("Tested successfully.\n");
 	printf("Lines checked: %zu\n", i);

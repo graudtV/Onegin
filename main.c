@@ -22,7 +22,7 @@
 char *freadAll(const char path[])
 {
 	FILE *f = fopen(path, "r");
-	if(f == NULL) //не удалось открыть файл
+	if (f == NULL) //не удалось открыть файл
 	{
 		//printf("ERROR: Cannot open file. May be, it does not exist.\n");
 		return NULL;
@@ -65,20 +65,20 @@ int _compareLinesBack(const void *arg1, const void *arg2) //!< компарат�
 	char *i = (line1->ptr + line1->len - 1); 
 	char *j = (line2->ptr + line2->len - 1);
 
-	while(1)
+	while (1)
 	{	//Работает и ладно
-		while(i >= line1->ptr && (isspace(*i) || ispunct(*i)))
+		while (i >= line1->ptr && (isspace(*i) || ispunct(*i)))
 			--i; //пропускаем все пробелы и пунктуационные знаки в первой строке
-		while(j >= line1->ptr && (isspace(*j) || ispunct(*j)))
+		while (j >= line1->ptr && (isspace(*j) || ispunct(*j)))
 			--j; //пропускаем все пробелы и пунктуационные знаки во второй строке	
-		if(*i > *j)
+		if (*i > *j)
 			return 1;
-		if(*i < *j)
+		if (*i < *j)
 			return -1;
 		--i, --j;
-		if(i < line1->ptr) //i < j
+		if (i < line1->ptr) //i < j
 			return -1;
-		if(j < line2->ptr)
+		if (j < line2->ptr)
 			return 1;
 		//чем больше if-ов, тем лучше
 	}
@@ -125,8 +125,6 @@ int main(int argc, char *argv[])
 	test_textToLines(lines); //unit-test
 	#endif
 
-	sortLinesFront(lines, nLines); //Сортируем по алфавиту
-
 	(argc > 2) ? strcpy(path, argv[2]) : strcpy(path, "result.txt");
 		//Если передан второй параметр, то используем его как имя файла, куда записывать результат
 		//Если не передан - записываем в дефолтный
@@ -140,6 +138,7 @@ int main(int argc, char *argv[])
 	}
 
 	fputs("Сортировка по первым буквам:\n", fout);
+	sortLinesFront(lines, nLines); //Сортируем по алфавиту	
 	lineWriteAllToFile(lines, fout);
 	fputs("\nСортировка по последним буквам (по рифмам)\n", fout);
 	sortLinesBack(lines, nLines);
