@@ -23,7 +23,11 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "Onegin", "index.html", [
-    [ "Onegin", "md___users_macuser__documents__c-projects_i_lab__git_hub__onegin__r_e_a_d_m_e.html", null ],
+    [ "Onegin", "md__r_e_a_d_m_e.html", [
+      [ "Описание", "md__r_e_a_d_m_e.html#autotoc_md1", null ],
+      [ "Компиляция:", "md__r_e_a_d_m_e.html#autotoc_md2", null ],
+      [ "Запуск:", "md__r_e_a_d_m_e.html#autotoc_md3", null ]
+    ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
