@@ -24,7 +24,7 @@ char *freadAll(const char path[])
 	FILE *f = fopen(path, "r");
 	if(f == NULL) //не удалось открыть файл
 	{
-		printf("ERROR: Cannot open file. May be, it does not exist.\n");
+		//printf("ERROR: Cannot open file. May be, it does not exist.\n");
 		return NULL;
 	}
 		printf("INFO: Reading from file '%s'\n", path);
@@ -91,18 +91,28 @@ void sortLinesBack(struct line_t lines[], size_t nLines)
 	qsort(lines, nLines, sizeof(struct line_t), &_compareLinesBack);
 }
 
+
+/*!
+ * Запускает остальные функции для сортировки текста
+ * Через параметры в консоли можно передать имена файлов для чтения и записи
+ * \param argv[0] Путь к файлу, из которого производится чтение
+ * \param argv[1] Путь к файлу, в который записывается результат
+ * По умолчанию чтение из example.txt, Запись в result.txt
+ * Если возникает проблема с файлами, то программа сообщит об этом
+ */
 int main(int argc, char *argv[])
 {
 	printf("\n***********************************************");
 	printf("\n************** WELCOME TO ONEGIN **************\n");
 	printf("***********************************************\n");
 
-	char path[100] = "example.txt"; //path хранит путь к файлу, из которого происходит чтение. Тут указан файл по умолчанию
-	if(argc > 1) strcpy(path, argv[1]); //Если пользователь передал путь к файлу через консоль, то используем путь пользователя
+	char path[500] = "example.txt"; //path хранит путь к файлу, из которого происходит чтение. Тут указан файл по умолчанию
+	if (argc > 1) strcpy(path, argv[1]); //Если пользователь передал путь к файлу через консоль, то используем путь пользователя
 
 	char *text = NULL; //Сюда будем считывать весь текста из файла (одной большой строчкой)
-	while((text = freadAll(path)) == NULL) //Считываем текст. Если такого файла не существует
+	while ((text = freadAll(path)) == NULL) //Считываем текст. Если такого файла не существует
 	{
+		printf("Error: Cannot open file '%s'. May be, it does not exist.\n", path);
 		printf("Please write correct path.\nPath: "); //Заставляем пользователя ввести нормальный путь
 		scanf("%s", path);
 		rewind(stdin); //стираем все оставшееся в stdin, чтобы не мешало при следующем вводе (если пользователь опять ошибся)
@@ -117,7 +127,17 @@ int main(int argc, char *argv[])
 
 	sortLinesFront(lines, nLines); //Сортируем по алфавиту
 
-	FILE *fout = fopen("result.txt", "w");
+	(argc > 2) ? strcpy(path, argv[2]) : strcpy(path, "result.txt");
+		//Если передан второй параметр, то используем его как имя файла, куда записывать результат
+		//Если не передан - записываем в дефолтный
+	FILE *fout = NULL;
+	while ((fout = fopen(path, "w")) == NULL) //Пока не удастся открыть файл
+	{
+		printf("Error: Cannot open file '%s' to write result.\n", path);
+		printf("Please write correct path.\nPath: "); //Заставляем пользователя ввести нормальный путь
+		scanf("%s", path);
+		rewind(stdin);
+	}
 
 	fputs("Сортировка по первым буквам:\n", fout);
 	lineWriteAllToFile(lines, fout);
