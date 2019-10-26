@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include <ctype.h>
+#include <limits.h> //For NAME_MAX
 
 #include "line_t.h"
 
@@ -118,7 +119,7 @@ int main(int argc, char *argv[])
 	printf("\n************** WELCOME TO ONEGIN **************\n");
 	printf("***********************************************\n");
 
-	char path[500] = "example.txt"; //path хранит путь к файлу, из которого происходит чтение. Тут указан файл по умолчанию
+	char path[NAME_MAX] = "example.txt"; //path хранит путь к файлу, из которого происходит чтение. Тут указан файл по умолчанию
 	if (argc > 1) strcpy(path, argv[1]); //Если пользователь передал путь к файлу через консоль, то используем путь пользователя
 
 	char *text = NULL; //Сюда будем считывать весь текста из файла (одной большой строчкой)
@@ -137,7 +138,7 @@ int main(int argc, char *argv[])
 	test_textToLines(lines); //unit-test
 	#endif
 
-	(argc > 2) ? strcpy(path, argv[2]) : strcpy(path, "result.txt");
+	strcpy (path, (argc > 2) ? argv[2] : "result.txt");
 		//Если передан второй параметр, то используем его как имя файла, куда записывать результат
 		//Если не передан - записываем в дефолтный
 	FILE *fout = NULL;

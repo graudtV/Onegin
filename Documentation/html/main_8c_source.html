@@ -71,152 +71,153 @@ $(document).ready(function(){initNavTree('main_8c_source.html','');});
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;assert.h&gt;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;ctype.h&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="line__t_8h.html">line_t.h</a>&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;limits.h&gt;</span> <span class="comment">//For NAME_MAX</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="line__t_8h.html">line_t.h</a>&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="main_8c.html#a4ee6abf83ec78313ac1b62f4174862f9">   22</a></span>&#160;<span class="keywordtype">char</span> *<a class="code" href="main_8c.html#a4ee6abf83ec78313ac1b62f4174862f9">freadAll</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> path[])</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    FILE *f = fopen(path, <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">if</span> (f == NULL) <span class="comment">//не удалось открыть файл</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="comment">//printf(&quot;ERROR: Cannot open file. May be, it does not exist.\n&quot;);</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    }</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        printf(<span class="stringliteral">&quot;INFO: Reading from file &#39;%s&#39;\n&quot;</span>, path);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="comment">//определяем длину файла</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    fseek(f, 0, SEEK_END);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">long</span> fileLen = ftell(f);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    printf(<span class="stringliteral">&quot;INFO: File length, characters (bytes): %lu; \n&quot;</span>, fileLen);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    fseek(f, 0, SEEK_SET);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">char</span> *text = calloc(fileLen + 1, <span class="keyword">sizeof</span>(<span class="keywordtype">char</span>)); <span class="comment">//выделяем память на нужное число char-ов. Еще один символ нужен для \0</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    assert(text != NULL); <span class="comment">//память успешно выделена</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">int</span> checkSum = fread(text, <span class="keyword">sizeof</span>(<span class="keywordtype">char</span>), fileLen, f);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    assert(checkSum == fileLen); <span class="comment">//чтение прошло успешно</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    text[fileLen] = <span class="charliteral">&#39;\0&#39;</span>; <span class="comment">//делаем строку text нуль-терменированной</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    fclose(f); </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">return</span> text;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="main_8c.html#aea819d5560ec4b51998aae0f448f4604">   51</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="main_8c.html#aea819d5560ec4b51998aae0f448f4604">_compareLinesFront</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *arg1, <span class="keyword">const</span> <span class="keywordtype">void</span> *arg2)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a> *line1 = (<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a>*)arg1;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a> *line2 = (<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a>*)arg2;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">return</span> strcmp(line1-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a>, line2-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="main_8c.html#abbed6adbc0c41cece50459f2fa03a86d">   61</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="main_8c.html#abbed6adbc0c41cece50459f2fa03a86d">sortLinesFront</a>(<span class="keyword">struct</span> <a class="code" href="structline__t.html">line_t</a> lines[], <span class="keywordtype">size_t</span> nLines)</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    qsort(lines, nLines, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> <a class="code" href="structline__t.html">line_t</a>), &amp;<a class="code" href="main_8c.html#aea819d5560ec4b51998aae0f448f4604">_compareLinesFront</a>);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="main_8c.html#ace0b54150c9abc867f83bbb545e883aa">   69</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="main_8c.html#ace0b54150c9abc867f83bbb545e883aa">_compareLinesBack</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *arg1, <span class="keyword">const</span> <span class="keywordtype">void</span> *arg2)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a> *line1 = (<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a>*)arg1;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a> *line2 = (<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a>*)arg2;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">//Записываем указатель на последние элементы строк</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">char</span> *i = (line1-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a> + line1-&gt;<a class="code" href="structline__t.html#a7360b55975153b822efc5217b7734e6a">len</a> - 1); </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">char</span> *j = (line2-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a> + line2-&gt;<a class="code" href="structline__t.html#a7360b55975153b822efc5217b7734e6a">len</a> - 1);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">while</span> (1)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {   <span class="comment">//Работает и ладно</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">while</span> (i &gt;= line1-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a> &amp;&amp; (isspace(*i) || ispunct(*i)))</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            --i; <span class="comment">//пропускаем все пробелы и пунктуационные знаки в первой строке</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">while</span> (j &gt;= line1-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a> &amp;&amp; (isspace(*j) || ispunct(*j)))</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            --j; <span class="comment">//пропускаем все пробелы и пунктуационные знаки во второй строке   </span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">if</span> (*i &gt; *j)</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">if</span> (*i &lt; *j)</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        --i, --j;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">if</span> (i &lt; line1-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a>) <span class="comment">//i &lt; j</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">if</span> (j &lt; line2-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a>)</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="comment">//чем больше if-ов, тем лучше</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="main_8c.html#ad5dca6d8c5bb8a16eddb944eb7aafd3b">  101</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="main_8c.html#ad5dca6d8c5bb8a16eddb944eb7aafd3b">sortLinesBack</a>(<span class="keyword">struct</span> <a class="code" href="structline__t.html">line_t</a> lines[], <span class="keywordtype">size_t</span> nLines)</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    qsort(lines, nLines, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> <a class="code" href="structline__t.html">line_t</a>), &amp;<a class="code" href="main_8c.html#ace0b54150c9abc867f83bbb545e883aa">_compareLinesBack</a>);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="main_8c.html#a4ee6abf83ec78313ac1b62f4174862f9">   23</a></span>&#160;<span class="keywordtype">char</span> *<a class="code" href="main_8c.html#a4ee6abf83ec78313ac1b62f4174862f9">freadAll</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> path[])</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    FILE *f = fopen(path, <span class="stringliteral">&quot;r&quot;</span>);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordflow">if</span> (f == NULL) <span class="comment">//не удалось открыть файл</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="comment">//printf(&quot;ERROR: Cannot open file. May be, it does not exist.\n&quot;);</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        printf(<span class="stringliteral">&quot;INFO: Reading from file &#39;%s&#39;\n&quot;</span>, path);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="comment">//определяем длину файла</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    fseek(f, 0, SEEK_END);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">long</span> fileLen = ftell(f);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    printf(<span class="stringliteral">&quot;INFO: File length, characters (bytes): %lu; \n&quot;</span>, fileLen);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    fseek(f, 0, SEEK_SET);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">char</span> *text = calloc(fileLen + 1, <span class="keyword">sizeof</span>(<span class="keywordtype">char</span>)); <span class="comment">//выделяем память на нужное число char-ов. Еще один символ нужен для \0</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    assert(text != NULL); <span class="comment">//память успешно выделена</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">int</span> checkSum = fread(text, <span class="keyword">sizeof</span>(<span class="keywordtype">char</span>), fileLen, f);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    assert(checkSum == fileLen); <span class="comment">//чтение прошло успешно</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    text[fileLen] = <span class="charliteral">&#39;\0&#39;</span>; <span class="comment">//делаем строку text нуль-терменированной</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    fclose(f); </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">return</span> text;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="main_8c.html#aea819d5560ec4b51998aae0f448f4604">   52</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="main_8c.html#aea819d5560ec4b51998aae0f448f4604">_compareLinesFront</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *arg1, <span class="keyword">const</span> <span class="keywordtype">void</span> *arg2)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a> *line1 = (<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a>*)arg1;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a> *line2 = (<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a>*)arg2;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">return</span> strcmp(line1-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a>, line2-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="main_8c.html#abbed6adbc0c41cece50459f2fa03a86d">   62</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="main_8c.html#abbed6adbc0c41cece50459f2fa03a86d">sortLinesFront</a>(<span class="keyword">struct</span> <a class="code" href="structline__t.html">line_t</a> lines[], <span class="keywordtype">size_t</span> nLines)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    qsort(lines, nLines, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> <a class="code" href="structline__t.html">line_t</a>), &amp;<a class="code" href="main_8c.html#aea819d5560ec4b51998aae0f448f4604">_compareLinesFront</a>);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="main_8c.html#ace0b54150c9abc867f83bbb545e883aa">   70</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="main_8c.html#ace0b54150c9abc867f83bbb545e883aa">_compareLinesBack</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *arg1, <span class="keyword">const</span> <span class="keywordtype">void</span> *arg2)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;{</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a> *line1 = (<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a>*)arg1;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a> *line2 = (<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a>*)arg2;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">//Записываем указатель на последние элементы строк</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">char</span> *i = (line1-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a> + line1-&gt;<a class="code" href="structline__t.html#a7360b55975153b822efc5217b7734e6a">len</a> - 1); </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">char</span> *j = (line2-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a> + line2-&gt;<a class="code" href="structline__t.html#a7360b55975153b822efc5217b7734e6a">len</a> - 1);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">while</span> (1)</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    {   <span class="comment">//Работает и ладно</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">while</span> (i &gt;= line1-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a> &amp;&amp; (isspace(*i) || ispunct(*i)))</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            --i; <span class="comment">//пропускаем все пробелы и пунктуационные знаки в первой строке</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">while</span> (j &gt;= line1-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a> &amp;&amp; (isspace(*j) || ispunct(*j)))</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            --j; <span class="comment">//пропускаем все пробелы и пунктуационные знаки во второй строке   </span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">if</span> (*i &gt; *j)</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">if</span> (*i &lt; *j)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        --i, --j;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">if</span> (i &lt; line1-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a>) <span class="comment">//i &lt; j</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordflow">if</span> (j &lt; line2-&gt;<a class="code" href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">ptr</a>)</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="comment">//чем больше if-ов, тем лучше</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="main_8c.html#ad5dca6d8c5bb8a16eddb944eb7aafd3b">  102</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="main_8c.html#ad5dca6d8c5bb8a16eddb944eb7aafd3b">sortLinesBack</a>(<span class="keyword">struct</span> <a class="code" href="structline__t.html">line_t</a> lines[], <span class="keywordtype">size_t</span> nLines)</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;{</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    qsort(lines, nLines, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> <a class="code" href="structline__t.html">line_t</a>), &amp;<a class="code" href="main_8c.html#ace0b54150c9abc867f83bbb545e883aa">_compareLinesBack</a>);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97">  115</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;{</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    printf(<span class="stringliteral">&quot;\n***********************************************&quot;</span>);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    printf(<span class="stringliteral">&quot;\n************** WELCOME TO ONEGIN **************\n&quot;</span>);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    printf(<span class="stringliteral">&quot;***********************************************\n&quot;</span>);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordtype">char</span> path[500] = <span class="stringliteral">&quot;example.txt&quot;</span>; <span class="comment">//path хранит путь к файлу, из которого происходит чтение. Тут указан файл по умолчанию</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordflow">if</span> (argc &gt; 1) strcpy(path, argv[1]); <span class="comment">//Если пользователь передал путь к файлу через консоль, то используем путь пользователя</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">char</span> *text = NULL; <span class="comment">//Сюда будем считывать весь текста из файла (одной большой строчкой)</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordflow">while</span> ((text = <a class="code" href="main_8c.html#a4ee6abf83ec78313ac1b62f4174862f9">freadAll</a>(path)) == NULL) <span class="comment">//Считываем текст. Если такого файла не существует</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    {</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        printf(<span class="stringliteral">&quot;Error: Cannot open file &#39;%s&#39;. May be, it does not exist.\n&quot;</span>, path);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        printf(<span class="stringliteral">&quot;Please write correct path.\nPath: &quot;</span>); <span class="comment">//Заставляем пользователя ввести нормальный путь</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        scanf(<span class="stringliteral">&quot;%s&quot;</span>, path);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        rewind(stdin); <span class="comment">//стираем все оставшееся в stdin, чтобы не мешало при следующем вводе (если пользователь опять ошибся)</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">size_t</span> nLines = 0;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a> *lines = <a class="code" href="line__t_8c.html#a0eb7d9c91480f4e0632d82a2c201d852">textToLines</a>(text, &amp;nLines);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">    #if TEST_TEXTTOLINES == 1 </span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <a class="code" href="line__t_8c.html#a6bef87870c83f8e8ae20a66089d31cd5">test_textToLines</a>(lines); <span class="comment">//unit-test</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    (argc &gt; 2) ? strcpy(path, argv[2]) : strcpy(path, <span class="stringliteral">&quot;result.txt&quot;</span>);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="comment">//Если передан второй параметр, то используем его как имя файла, куда записывать результат</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="comment">//Если не передан - записываем в дефолтный</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    FILE *fout = NULL;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordflow">while</span> ((fout = fopen(path, <span class="stringliteral">&quot;w&quot;</span>)) == NULL) <span class="comment">//Пока не удастся открыть файл</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        printf(<span class="stringliteral">&quot;Error: Cannot open file &#39;%s&#39; to write result.\n&quot;</span>, path);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        printf(<span class="stringliteral">&quot;Please write correct path.\nPath: &quot;</span>); <span class="comment">//Заставляем пользователя ввести нормальный путь</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        scanf(<span class="stringliteral">&quot;%s&quot;</span>, path);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        rewind(stdin);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    }</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    fputs(<span class="stringliteral">&quot;Сортировка по первым буквам:\n&quot;</span>, fout);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <a class="code" href="main_8c.html#abbed6adbc0c41cece50459f2fa03a86d">sortLinesFront</a>(lines, nLines); <span class="comment">//Сортируем по алфавиту  </span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="line__t_8c.html#a0f4af95e877a478bd374ec6a49a5bae0">lineWriteAllToFile</a>(lines, fout);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    fputs(<span class="stringliteral">&quot;\nСортировка по последним буквам (по рифмам)\n&quot;</span>, fout);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="main_8c.html#ad5dca6d8c5bb8a16eddb944eb7aafd3b">sortLinesBack</a>(lines, nLines);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <a class="code" href="line__t_8c.html#a0f4af95e877a478bd374ec6a49a5bae0">lineWriteAllToFile</a>(lines, fout);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    fclose(fout);</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    fout = NULL;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    free(lines); </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    lines = NULL;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    free(text); </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    text = NULL;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    printf(<span class="stringliteral">&quot;***********************************************\n&quot;</span>);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97">  116</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;{</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    printf(<span class="stringliteral">&quot;\n***********************************************&quot;</span>);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    printf(<span class="stringliteral">&quot;\n************** WELCOME TO ONEGIN **************\n&quot;</span>);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    printf(<span class="stringliteral">&quot;***********************************************\n&quot;</span>);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordtype">char</span> path[NAME_MAX] = <span class="stringliteral">&quot;example.txt&quot;</span>; <span class="comment">//path хранит путь к файлу, из которого происходит чтение. Тут указан файл по умолчанию</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordflow">if</span> (argc &gt; 1) strcpy(path, argv[1]); <span class="comment">//Если пользователь передал путь к файлу через консоль, то используем путь пользователя</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordtype">char</span> *text = NULL; <span class="comment">//Сюда будем считывать весь текста из файла (одной большой строчкой)</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">while</span> ((text = <a class="code" href="main_8c.html#a4ee6abf83ec78313ac1b62f4174862f9">freadAll</a>(path)) == NULL) <span class="comment">//Считываем текст. Если такого файла не существует</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    {</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        printf(<span class="stringliteral">&quot;Error: Cannot open file &#39;%s&#39;. May be, it does not exist.\n&quot;</span>, path);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        printf(<span class="stringliteral">&quot;Please write correct path.\nPath: &quot;</span>); <span class="comment">//Заставляем пользователя ввести нормальный путь</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        scanf(<span class="stringliteral">&quot;%s&quot;</span>, path);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        rewind(stdin); <span class="comment">//стираем все оставшееся в stdin, чтобы не мешало при следующем вводе (если пользователь опять ошибся)</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    }</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordtype">size_t</span> nLines = 0;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keyword">struct </span><a class="code" href="structline__t.html">line_t</a> *lines = <a class="code" href="line__t_8c.html#a0eb7d9c91480f4e0632d82a2c201d852">textToLines</a>(text, &amp;nLines);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="preprocessor">    #if TEST_TEXTTOLINES == 1 </span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <a class="code" href="line__t_8c.html#a6bef87870c83f8e8ae20a66089d31cd5">test_textToLines</a>(lines); <span class="comment">//unit-test</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    strcpy (path, (argc &gt; 2) ? argv[2] : <span class="stringliteral">&quot;result.txt&quot;</span>);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="comment">//Если передан второй параметр, то используем его как имя файла, куда записывать результат</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="comment">//Если не передан - записываем в дефолтный</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    FILE *fout = NULL;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordflow">while</span> ((fout = fopen(path, <span class="stringliteral">&quot;w&quot;</span>)) == NULL) <span class="comment">//Пока не удастся открыть файл</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    {</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        printf(<span class="stringliteral">&quot;Error: Cannot open file &#39;%s&#39; to write result.\n&quot;</span>, path);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        printf(<span class="stringliteral">&quot;Please write correct path.\nPath: &quot;</span>); <span class="comment">//Заставляем пользователя ввести нормальный путь</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        scanf(<span class="stringliteral">&quot;%s&quot;</span>, path);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        rewind(stdin);</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    }</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    fputs(<span class="stringliteral">&quot;Сортировка по первым буквам:\n&quot;</span>, fout);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="main_8c.html#abbed6adbc0c41cece50459f2fa03a86d">sortLinesFront</a>(lines, nLines); <span class="comment">//Сортируем по алфавиту  </span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="line__t_8c.html#a0f4af95e877a478bd374ec6a49a5bae0">lineWriteAllToFile</a>(lines, fout);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    fputs(<span class="stringliteral">&quot;\nСортировка по последним буквам (по рифмам)\n&quot;</span>, fout);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <a class="code" href="main_8c.html#ad5dca6d8c5bb8a16eddb944eb7aafd3b">sortLinesBack</a>(lines, nLines);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="line__t_8c.html#a0f4af95e877a478bd374ec6a49a5bae0">lineWriteAllToFile</a>(lines, fout);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    fclose(fout);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    fout = NULL;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    free(lines); </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    lines = NULL;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    free(text); </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    text = NULL;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    printf(<span class="stringliteral">&quot;***********************************************\n&quot;</span>);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    printf(<span class="stringliteral">&quot;***********************************************\n\n&quot;</span>);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;}</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    printf(<span class="stringliteral">&quot;***********************************************\n&quot;</span>);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    printf(<span class="stringliteral">&quot;***********************************************\n\n&quot;</span>);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aline__t_8c_html_a0f4af95e877a478bd374ec6a49a5bae0"><div class="ttname"><a href="line__t_8c.html#a0f4af95e877a478bd374ec6a49a5bae0">lineWriteAllToFile</a></div><div class="ttdeci">void lineWriteAllToFile(struct line_t lines[], FILE *f)</div><div class="ttdoc">Записывает все строчки из массива строк типа line_t в файл</div><div class="ttdef"><b>Definition:</b> <a href="line__t_8c_source.html#l00217">line_t.c:217</a></div></div>
 <div class="ttc" id="astructline__t_html_a935adc2e417a61d7eb6f04efb18ba031"><div class="ttname"><a href="structline__t.html#a935adc2e417a61d7eb6f04efb18ba031">line_t::ptr</a></div><div class="ttdeci">char * ptr</div><div class="ttdef"><b>Definition:</b> <a href="line__t_8h_source.html#l00021">line_t.h:21</a></div></div>
 <div class="ttc" id="aline__t_8c_html_a0eb7d9c91480f4e0632d82a2c201d852"><div class="ttname"><a href="line__t_8c.html#a0eb7d9c91480f4e0632d82a2c201d852">textToLines</a></div><div class="ttdeci">struct line_t * textToLines(char *text, size_t *NumberOfLines)</div><div class="ttdoc">Разбивает одну большую строку-текст на отдельные строки</div><div class="ttdef"><b>Definition:</b> <a href="line__t_8c_source.html#l00091">line_t.c:91</a></div></div>
-<div class="ttc" id="amain_8c_html_ace0b54150c9abc867f83bbb545e883aa"><div class="ttname"><a href="main_8c.html#ace0b54150c9abc867f83bbb545e883aa">_compareLinesBack</a></div><div class="ttdeci">int _compareLinesBack(const void *arg1, const void *arg2)</div><div class="ttdoc">Компаратор для qsort для сортировки line_t по последним буквам</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00069">main.c:69</a></div></div>
-<div class="ttc" id="amain_8c_html_aea819d5560ec4b51998aae0f448f4604"><div class="ttname"><a href="main_8c.html#aea819d5560ec4b51998aae0f448f4604">_compareLinesFront</a></div><div class="ttdeci">int _compareLinesFront(const void *arg1, const void *arg2)</div><div class="ttdoc">Компаратор для qsort для сортировки line_t по первым буквам</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00051">main.c:51</a></div></div>
+<div class="ttc" id="amain_8c_html_ace0b54150c9abc867f83bbb545e883aa"><div class="ttname"><a href="main_8c.html#ace0b54150c9abc867f83bbb545e883aa">_compareLinesBack</a></div><div class="ttdeci">int _compareLinesBack(const void *arg1, const void *arg2)</div><div class="ttdoc">Компаратор для qsort для сортировки line_t по последним буквам</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00070">main.c:70</a></div></div>
+<div class="ttc" id="amain_8c_html_aea819d5560ec4b51998aae0f448f4604"><div class="ttname"><a href="main_8c.html#aea819d5560ec4b51998aae0f448f4604">_compareLinesFront</a></div><div class="ttdeci">int _compareLinesFront(const void *arg1, const void *arg2)</div><div class="ttdoc">Компаратор для qsort для сортировки line_t по первым буквам</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00052">main.c:52</a></div></div>
 <div class="ttc" id="astructline__t_html"><div class="ttname"><a href="structline__t.html">line_t</a></div><div class="ttdoc">Заголовочный файл с прототипами функций из line_t.c.</div><div class="ttdef"><b>Definition:</b> <a href="line__t_8h_source.html#l00019">line_t.h:19</a></div></div>
 <div class="ttc" id="aline__t_8c_html_a6bef87870c83f8e8ae20a66089d31cd5"><div class="ttname"><a href="line__t_8c.html#a6bef87870c83f8e8ae20a66089d31cd5">test_textToLines</a></div><div class="ttdeci">void test_textToLines(struct line_t lines[])</div><div class="ttdoc">Unit-test функции textToLines() Проверяет, что все строки полученного массива корректны,...</div><div class="ttdef"><b>Definition:</b> <a href="line__t_8c_source.html#l00239">line_t.c:239</a></div></div>
-<div class="ttc" id="amain_8c_html_abbed6adbc0c41cece50459f2fa03a86d"><div class="ttname"><a href="main_8c.html#abbed6adbc0c41cece50459f2fa03a86d">sortLinesFront</a></div><div class="ttdeci">void sortLinesFront(struct line_t lines[], size_t nLines)</div><div class="ttdoc">Функция сортировка массива строк line_t по первым буквам</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00061">main.c:61</a></div></div>
-<div class="ttc" id="amain_8c_html_a4ee6abf83ec78313ac1b62f4174862f9"><div class="ttname"><a href="main_8c.html#a4ee6abf83ec78313ac1b62f4174862f9">freadAll</a></div><div class="ttdeci">char * freadAll(const char path[])</div><div class="ttdoc">Считывает весь файл в одну большую строку</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00022">main.c:22</a></div></div>
-<div class="ttc" id="amain_8c_html_ad5dca6d8c5bb8a16eddb944eb7aafd3b"><div class="ttname"><a href="main_8c.html#ad5dca6d8c5bb8a16eddb944eb7aafd3b">sortLinesBack</a></div><div class="ttdeci">void sortLinesBack(struct line_t lines[], size_t nLines)</div><div class="ttdoc">Функция сортировка массива строк line_t по последним буквам</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00101">main.c:101</a></div></div>
-<div class="ttc" id="amain_8c_html_a0ddf1224851353fc92bfbff6f499fa97"><div class="ttname"><a href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97">main</a></div><div class="ttdeci">int main(int argc, char *argv[])</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00115">main.c:115</a></div></div>
+<div class="ttc" id="amain_8c_html_abbed6adbc0c41cece50459f2fa03a86d"><div class="ttname"><a href="main_8c.html#abbed6adbc0c41cece50459f2fa03a86d">sortLinesFront</a></div><div class="ttdeci">void sortLinesFront(struct line_t lines[], size_t nLines)</div><div class="ttdoc">Функция сортировка массива строк line_t по первым буквам</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00062">main.c:62</a></div></div>
+<div class="ttc" id="amain_8c_html_a4ee6abf83ec78313ac1b62f4174862f9"><div class="ttname"><a href="main_8c.html#a4ee6abf83ec78313ac1b62f4174862f9">freadAll</a></div><div class="ttdeci">char * freadAll(const char path[])</div><div class="ttdoc">Считывает весь файл в одну большую строку</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00023">main.c:23</a></div></div>
+<div class="ttc" id="amain_8c_html_ad5dca6d8c5bb8a16eddb944eb7aafd3b"><div class="ttname"><a href="main_8c.html#ad5dca6d8c5bb8a16eddb944eb7aafd3b">sortLinesBack</a></div><div class="ttdeci">void sortLinesBack(struct line_t lines[], size_t nLines)</div><div class="ttdoc">Функция сортировка массива строк line_t по последним буквам</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00102">main.c:102</a></div></div>
+<div class="ttc" id="amain_8c_html_a0ddf1224851353fc92bfbff6f499fa97"><div class="ttname"><a href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97">main</a></div><div class="ttdeci">int main(int argc, char *argv[])</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00116">main.c:116</a></div></div>
 <div class="ttc" id="astructline__t_html_a7360b55975153b822efc5217b7734e6a"><div class="ttname"><a href="structline__t.html#a7360b55975153b822efc5217b7734e6a">line_t::len</a></div><div class="ttdeci">size_t len</div><div class="ttdef"><b>Definition:</b> <a href="line__t_8h_source.html#l00022">line_t.h:22</a></div></div>
 <div class="ttc" id="aline__t_8h_html"><div class="ttname"><a href="line__t_8h.html">line_t.h</a></div></div>
 <!-- start footer part -->
